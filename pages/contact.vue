@@ -20,7 +20,7 @@
 <script>
 export default {
   head() {
-    return { title: 'Inspire' }
+    return { title: 'Contact' }
   },
   methods: {
     flash(message, color = null, exec = null) {

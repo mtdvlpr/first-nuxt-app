@@ -1,10 +1,12 @@
 <template>
   <v-app dark>
+    <flash />
+    <modal />
+    <confirm />
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
+      class="hidden-md-and-up"
+      disable-resize-watcher
       app
     >
       <v-list>
@@ -12,7 +14,7 @@
           v-for="(item, i) in items"
           :key="i"
           :to="item.to"
-          router
+          nuxt
           exact
         >
           <v-list-item-action>
@@ -24,94 +26,102 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
+    <v-app-bar app>
+      <v-app-bar-nav-icon
+        class="hidden-md-and-up"
+        @click.stop="drawer = !drawer"
+      />
+      <nuxt-link exact to="/">
+        <v-img
+          class="mx-2"
+          src="/v.png"
+          max-height="40"
+          max-width="40"
+          contain
+        />
+      </nuxt-link>
+      <v-toolbar-title>Home</v-toolbar-title>
       <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn v-for="item in items" :key="item.title" :to="item.to" nuxt exact>
+          <v-icon left>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
+      </v-toolbar-items>
+      <v-spacer />
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn icon @click="toggleDarkMode">
+          <v-icon>mdi-brightness-6</v-icon>
+        </v-btn>
+      </v-toolbar-items>
     </v-app-bar>
     <v-main>
-      <v-container>
-        <Nuxt />
+      <v-container fluid>
+        <nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
     <v-footer
-      :absolute="!fixed"
+      :color="darkMode ? 'grey-darken-2' : 'black'"
+      absolute
+      padless
       app
     >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <v-row justify="center" no-gutters>
+        <v-btn color="white" text rounded class="my-2" to="/">
+          <v-icon left>mdi-home</v-icon>
+          home
+        </v-btn>
+        <v-btn
+          v-for="(link, i) in items"
+          :key="i"
+          color="white"
+          text
+          rounded
+          class="my-2"
+          :to="link.to"
+          exact
+          nuxt
+        >
+          <v-icon left>{{ link.icon }}</v-icon>
+          {{ link.title }}
+        </v-btn>
+        <v-col class="py-4 text-center white--text" cols="12">
+          &copy; {{ new Date().getFullYear() }} —
+          <strong>first-nuxt-app</strong>
+        </v-col>
+      </v-row>
     </v-footer>
   </v-app>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      clipped: false,
       drawer: false,
-      fixed: false,
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          title: 'About us',
+          to: '/about',
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
+          title: 'Contact us',
+          to: '/contact',
+        },
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
     }
-  }
+  },
+  computed: {
+    darkMode() {
+      return this.$vuetify.theme.dark
+    },
+  },
+  methods: {
+    toggleDarkMode() {
+      this.$vuetify.theme.dark = !this.darkMode
+    },
+  },
 }
 </script>
