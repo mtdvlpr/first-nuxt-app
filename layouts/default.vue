@@ -53,6 +53,20 @@
         <v-btn icon @click="toggleDarkMode">
           <v-icon>mdi-brightness-6</v-icon>
         </v-btn>
+        <template v-if="$auth.loggedIn">
+          <v-btn to="/profile" nuxt exact color="primary">
+            <v-icon left>mdi-account</v-icon>
+            Your account
+          </v-btn>
+          <v-btn color="primary" @click="$auth.logout()">
+            <v-icon left>mdi-logout</v-icon>
+            Log out
+          </v-btn>
+        </template>
+        <v-btn v-else to="/login" nuxt exact color="primary">
+          <v-icon left>mdi-account</v-icon>
+          Log in
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <v-main>
