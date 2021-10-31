@@ -1,6 +1,6 @@
 <template>
-  <v-dialog v-model="dialog" width="100%" scrollable :max-width="maxWidth">
-    <v-card v-if="dialog">
+  <v-dialog v-model="dialog" scrollable width="100%" :max-width="maxWidth">
+    <v-card color="card">
       <v-card-title v-if="title" v-text="title" />
       <v-card-text v-if="message" style="max-width: 600px" v-html="message" />
       <component :is="component" v-if="component" :props="componentProps" />
@@ -45,21 +45,14 @@ export default {
   },
   methods: {
     async clear() {
-      if (this.cancel) {
-        await this.cancel()
-      }
+      if (this.cancel) await this.cancel()
       this.$store.commit('confirm/clear')
     },
     async ok() {
       try {
         await this.exec()
-        if (this.to) {
-          this.$router.push(this.to)
-        }
-        if (this.flash) {
-          this.$flash(this.flash)
-        }
-
+        if (this.to) this.$router.push(this.to)
+        if (this.flash) this.$flash(this.flash)
         this.$store.commit('confirm/clear')
       } catch (e) {
         console.error(e)

@@ -49,7 +49,7 @@ passport.use(new JwtStrategy({
           scope: user.scope
         })
       } else {
-        return done(null, false, { message: 'Failed' })
+        return done(null, false, { message: 'The user could not be found!' })
       }
     } catch (err) {
       return done(err)
@@ -69,7 +69,7 @@ passport.use(
           return user
         }).then(async (user) => {
           if (!user) {
-            return done(null, false, { message: 'Authentication failed' })
+            return done(null, false, { message: 'Either your email or password was incorrect!' })
           }
 
           const validation = await comparePasswords(password, user.password)
@@ -77,11 +77,11 @@ passport.use(
             return done(null, user)
           } else if (validation) {
             return done(null, false, {
-              message: 'You have to verify you email address',
+              message: 'You have to verify your email address first!',
               resendToken: true
             })
           } else {
-            return done(null, false, { message: 'Authentication failed' })
+            return done(null, false, { message: 'Either your email or password was incorrect!' })
           }
         }).catch((err) => {
           return done(err)

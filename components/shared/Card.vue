@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-2 mb-4">
+  <v-card color="card" class="pa-2 mb-4">
     <v-card-title v-if="title" class="justify-center" v-text="title" />
     <v-card-subtitle v-if="subtitle" v-text="subtitle" />
     <v-card-text>

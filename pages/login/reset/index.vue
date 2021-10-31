@@ -20,6 +20,9 @@
 export default {
   auth: 'guest',
   middleware: 'auth',
+  head() {
+    return { title: 'Reset password' }
+  },
   methods: {
     async sendPasswordToken(form) {
       try {

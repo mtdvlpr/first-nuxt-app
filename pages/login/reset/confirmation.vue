@@ -24,6 +24,9 @@ export default {
       token: '',
     }
   },
+  head() {
+    return { title: 'Change password' }
+  },
   mounted() {
     this.token = this.$route.query.token
   },

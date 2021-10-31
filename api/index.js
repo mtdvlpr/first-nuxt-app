@@ -21,7 +21,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 // Routes
 // ---------------------------------- /test -------------------------------------
 app.get('/test', (req, res) => {
-  res.send('OK')
+  res.status(200).send('OK')
 })
 
 // eslint-disable-next-line require-await
@@ -55,7 +55,7 @@ app.post('/auth/register', async (req, res) => {
         'Registration confirmation',
         signedVerificationToken
       )
-      res.send({ message: 'We sent an email with a verification link. Check your inbox!' })
+      res.status(200).send({ message: 'We sent an email with a verification link. Check your inbox!' })
     }).catch((e) => {
       res.status(500).send({ message: 'Something went wrong', error: e })
     })
@@ -69,12 +69,12 @@ app.post('/auth/confirmation', async (req, res) => {
   if (user && user.verificationToken === verificationToken && user.verificationTokenExpire >= new Date()) {
     user.isVerified = true
     user.save()
-    return res.send({
+    return res.status(200).send({
       confirmationStatus: 'verified',
       message: 'Your email has been verified.'
     })
   } else {
-    return res.send({
+    return res.status(400).send({
       confirmationStatus: 'unverified',
       message: 'Email can\'t be verified!\n. A possible reason is an expired token.'
     })
@@ -86,7 +86,7 @@ app.post('/auth/confirmation/resend', async (req, res) => {
   const user = await AuthenticationController.getUser(email)
 
   if (user && user.isVerified === true) {
-    return res.send('Already verified.')
+    return res.status(400).send('Already verified.')
   } else if (user) {
     const verificationToken = AuthenticationController.generateVerificationToken()
     const verificationTokenExpire = AuthenticationController.generateVerificationTokenExpire()
@@ -97,11 +97,11 @@ app.post('/auth/confirmation/resend', async (req, res) => {
 
     const signedVerificationToken = AuthenticationController.signVerificationToken(user.email, user.verificationToken)
 
-    await MailerController.sendRegistrationToken(user.email, 'Registration confirmation - resend', signedVerificationToken)
+    await MailerController.sendRegistrationToken(user.email, 'Registration Confirmation - resend', signedVerificationToken)
 
-    return res.send('Token has been resent.')
+    return res.status(200).send('Token has been resent.')
   } else {
-    return res.send('Token can\'t be resent.')
+    return res.status(404).send('User can\'t be found!')
   }
 })
 
@@ -120,10 +120,10 @@ app.post('/auth/password/reset', async (req, res) => {
 
     const signedVerificationToken = AuthenticationController.signVerificationToken(user.email, user.verificationToken)
 
-    await MailerController.sendPasswordChangeToken(user.email, 'Password resetting', signedVerificationToken)
-    return res.send({ message: 'Link has been sent. Check you email.' })
+    await MailerController.sendPasswordChangeToken(user.email, 'Password Reset', signedVerificationToken)
+    return res.status(200).send({ message: 'A link has been sent. Check your email.' })
   } else {
-    return res.send({ message: 'Password can\'t be renewed' })
+    return res.status(404).send({ message: 'User can\'t be found!' })
   }
 })
 
@@ -138,12 +138,12 @@ app.post('/auth/password/change', async (req, res) => {
       user.password = await AuthenticationController.generatePasswordHash(password)
       user.passwordReset = false
       user.save()
-      return res.send({ message: 'Password has been changed' })
+      return res.status(200).send({ message: 'Password has been changed.' })
     } catch (err) {
-      return res.send({ message: 'Some error happened. Contact administrator' })
+      return res.status(500).send({ message: 'An error occurred. Please try again later...' })
     }
   } else {
-    return res.send({ message: 'Token is invalid!. Re-send your request' })
+    return res.status(400).send({ message: 'Token is invalid!. Try resending your request.' })
   }
 })
 
@@ -157,7 +157,7 @@ app.post('/auth/login', (req, res) => {
       return res.status(403).send({ message: options.message })
     } else {
       const token = AuthenticationController.signUserToken(user)
-      return res.send({ token })
+      return res.status(200).send({ token, message: 'Logged in.' })
     }
   })(req, res)
 })
@@ -174,7 +174,7 @@ app.get('/auth/user', async (req, res) => {
       // you should log it
       return res.status(403).send({ message: options.message })
     } else {
-      return res.send({ user })
+      return res.status(200).send({ user })
     }
   })(req, res)
 })

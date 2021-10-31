@@ -20,6 +20,9 @@
 export default {
   auth: 'guest',
   middleware: 'auth',
+  head() {
+    return { title: 'Resend verify email' }
+  },
   methods: {
     async resendToken(form) {
       const resendVerification = await this.$axios.post(

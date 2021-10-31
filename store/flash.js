@@ -1,7 +1,6 @@
 export const state = () => ({
   message: '',
   color: '',
-  baseColor: 'info',
   exec: null,
 })
 
@@ -20,15 +19,14 @@ export const mutations = {
 }
 
 export const actions = {
-  show({ state, commit }, payload) {
+  show({ commit }, payload) {
     commit('message', payload.message)
-    commit('color', payload.color ?? state.baseColor)
+    commit('color', payload.color ?? 'info')
     commit('exec', payload.exec ?? null)
   },
 
   clear({ commit }) {
     commit('message', '')
-    commit('color', '')
   }
 }
 

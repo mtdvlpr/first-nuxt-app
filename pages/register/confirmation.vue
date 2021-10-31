@@ -28,6 +28,9 @@ export default {
     resend: false,
     confirmationStatus: false,
   }),
+  head() {
+    return { title: 'Verify email' }
+  },
   mounted() {
     this.checkToken()
   },

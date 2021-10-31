@@ -7,7 +7,7 @@
     overlay-opacity="0.8"
     @click:outside="close()"
   >
-    <v-card>
+    <v-card color="card">
       <template v-if="title">
         <v-card-title class="text-h6 py-0" v-html="title" />
         <v-divider />
@@ -51,9 +51,7 @@ export default {
   },
   methods: {
     close() {
-      if (this.execOnClose) {
-        this.execOnClose()
-      }
+      if (this.execOnClose) this.execOnClose()
       this.$store.commit('modal/close')
     },
   },

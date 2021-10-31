@@ -11,6 +11,9 @@
 export default {
   auth: 'guest',
   middleware: 'auth',
+  head() {
+    return { title: 'Log in' }
+  },
   methods: {
     async login(form) {
       try {
@@ -20,6 +23,7 @@ export default {
             password: form.password,
           },
         })
+        console.log(response)
         this.$flash(response.data.message)
       } catch (e) {
         console.error(e.response)

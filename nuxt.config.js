@@ -3,7 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - first-nuxt-app',
+    titleTemplate: '%s - Movies For You',
     title: 'first-nuxt-app',
     meta: [
       { charset: 'utf-8' },
@@ -22,9 +22,10 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~plugins/flash',
+    '~plugins/axios',
     '~plugins/common',
-    '~plugins/constants'
+    '~plugins/constants',
+    '~plugins/flash',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -96,6 +97,7 @@ export default {
           primary: colors.blue.darken2,
           accent: colors.blue.accent1,
           secondary: colors.grey.darken3,
+          card: colors.white,
           info: colors.blue,
           warning: colors.amber,
           error: colors.red.accent2,
@@ -105,6 +107,7 @@ export default {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
+          card: '#272727',
           info: colors.blue,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
@@ -129,6 +132,7 @@ export default {
     MONGODB_DB: process.env.MONGODB_DB,
     AUTH_USER_SECRET: process.env.AUTH_USER_SECRET,
     AUTH_EMAIL_VERIFICATION_SECRET: process.env.AUTH_EMAIL_VERIFICATION_SECRET,
+    MOVIE_API_KEY: process.env.MOVIE_API_KEY,
     SENDGRID_SENDER: process.env.SENDGRID_SENDER,
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY
   }

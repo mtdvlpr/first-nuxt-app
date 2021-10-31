@@ -40,7 +40,7 @@
           contain
         />
       </nuxt-link>
-      <v-toolbar-title>Home</v-toolbar-title>
+      <v-toolbar-title>Movies For You</v-toolbar-title>
       <v-spacer />
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn v-for="item in items" :key="item.title" :to="item.to" nuxt exact>
@@ -58,7 +58,7 @@
             <v-icon left>mdi-account</v-icon>
             Your account
           </v-btn>
-          <v-btn @click="$auth.logout()">
+          <v-btn @click="logout()">
             <v-icon left>mdi-logout</v-icon>
             Log out
           </v-btn>
@@ -74,12 +74,7 @@
         <nuxt />
       </v-container>
     </v-main>
-    <v-footer
-      :color="darkMode ? 'grey-darken-2' : 'black'"
-      absolute
-      padless
-      app
-    >
+    <v-footer :color="footerColor" absolute padless app>
       <v-row justify="center" no-gutters>
         <v-btn color="white" text rounded class="my-2" to="/">
           <v-icon left>mdi-home</v-icon>
@@ -101,7 +96,7 @@
         </v-btn>
         <v-col class="py-4 text-center white--text" cols="12">
           &copy; {{ new Date().getFullYear() }} —
-          <strong>first-nuxt-app</strong>
+          <strong>Movies For You</strong>
         </v-col>
       </v-row>
     </v-footer>
@@ -115,26 +110,35 @@ export default {
       drawer: false,
       items: [
         {
-          icon: 'mdi-apps',
+          icon: 'mdi-information-outline',
           title: 'About us',
           to: '/about',
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-email',
           title: 'Contact us',
           to: '/contact',
+        },
+        {
+          icon: 'mdi-movie',
+          title: 'Our collection',
+          to: '/movies',
         },
       ],
     }
   },
   computed: {
-    darkMode() {
-      return this.$vuetify.theme.dark
+    footerColor() {
+      return this.$vuetify.theme.dark ? '' : 'black'
     },
   },
   methods: {
     toggleDarkMode() {
-      this.$vuetify.theme.dark = !this.darkMode
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+    },
+    logout() {
+      this.$auth.logout()
+      this.$flash("You're logged out")
     },
   },
 }

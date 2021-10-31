@@ -39,6 +39,7 @@ export default {
           exec: this.exec,
           showTime: 6,
         })
+        this.$store.dispatch('flash/clear')
       }
     },
   },

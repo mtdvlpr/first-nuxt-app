@@ -11,6 +11,9 @@
 export default {
   auth: 'guest',
   middleware: 'auth',
+  head() {
+    return { title: 'Register' }
+  },
   methods: {
     async register(form) {
       try {
