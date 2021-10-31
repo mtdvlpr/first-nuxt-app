@@ -9,7 +9,7 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">FullName</th>
+          <th scope="col">Scope</th>
           <th scope="col">Email</th>
         </tr>
       </thead>

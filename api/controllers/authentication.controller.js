@@ -44,6 +44,7 @@ passport.use(new JwtStrategy({
       const user = await getUser(jwtPayload.email)
       if (user) {
         return done(null, {
+          id: user._id,
           email: user.email,
           scope: user.scope
         })
