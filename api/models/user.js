@@ -6,6 +6,10 @@ try {
   const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    verificationToken: { type: String, required: true },
+    verificationTokenExpire: { type: Date, required: true },
+    isVerified: { type: Boolean, required: true, default: false },
+    resetPassword: { type: Boolean, required: true, default: false },
     scope: { type: Array, required: true, default: ['user'] },
     firstName: { type: String, required: false },
     lastName: { type: String, required: false },

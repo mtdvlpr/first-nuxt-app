@@ -1,10 +1,24 @@
 import User from '../models/user'
+const crypto = require('crypto')
 const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken")
 const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
 const LocalStrategy = require('passport-local').Strategy
+
+const expireSpan = 3600 * 1000 * 24
 const authUserSecret = process.env.AUTH_USER_SECRET
+const authEmailVerificationSecret = process.env.AUTH_EMAIL_VERIFICATION_SECRET
+
+const adminRole = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).send({
+      status: 'fail',
+      message: 'Invalid authorization level!'
+    })
+  }
+  next();
+}
 
 const tokenExtractor = function (req) {
   let token = null
@@ -25,20 +39,20 @@ passport.use(new JwtStrategy({
   jwtFromRequest: tokenExtractor,
   secretOrKey: authUserSecret
 },
-  function (jwtPayload, done) {
-    return getUser(jwtPayload.email)
-      .then((user) => {
-        if (user) {
-          return done(null, {
-            email: user.email,
-          })
-        } else {
-          return done(null, false, 'Failed')
-        }
-      })
-      .catch((err) => {
-        return done(err)
-      })
+  async function (jwtPayload, done) {
+    try {
+      const user = await getUser(jwtPayload.email)
+      if (user) {
+        return done(null, {
+          email: user.email,
+          scope: user.scope
+        })
+      } else {
+        return done(null, false, { message: 'Failed' })
+      }
+    } catch (err) {
+      return done(err)
+    }
   }
 ))
 
@@ -56,9 +70,15 @@ passport.use(
           if (!user) {
             return done(null, false, { message: 'Authentication failed' })
           }
+
           const validation = await comparePasswords(password, user.password)
-          if (validation) {
+          if (validation && user.isVerified) {
             return done(null, user)
+          } else if (validation) {
+            return done(null, false, {
+              message: 'You have to verify you email address',
+              resendToken: true
+            })
           } else {
             return done(null, false, { message: 'Authentication failed' })
           }
@@ -70,7 +90,9 @@ passport.use(
 )
 
 async function createUser(email, password) {
-  return await User.create({ email, password })
+  const verificationToken = generateVerificationToken()
+  const verificationTokenExpire = generateVerificationTokenExpire()
+  return await User.create({ email, password, verificationToken, verificationTokenExpire })
     .then((data) => {
       return data
     }).catch((error) => {
@@ -87,12 +109,31 @@ async function getUser(email) {
     })
 }
 
+async function generatePasswordHash(plainPassword) {
+  return await bcrypt.hash(plainPassword, 12)
+}
+
 async function comparePasswords(plainPassword, hashedPassword) {
   return await bcrypt.compare(plainPassword, hashedPassword)
 }
 
-async function generatePasswordHash(plainPassword) {
-  return await bcrypt.hash(plainPassword, 12)
+function generateVerificationToken() {
+  return crypto.randomBytes(30).toString('hex')
+}
+
+function generateVerificationTokenExpire() {
+  return new Date(Date.now() + expireSpan)
+}
+
+function signVerificationToken(email, verificationToken) {
+  return jwt.sign({
+    email,
+    verificationToken
+  }, authEmailVerificationSecret)
+}
+
+function verifySignedVerificationToken(token) {
+  return jwt.verify(token, authEmailVerificationSecret)
 }
 
 function signUserToken(user) {
@@ -106,5 +147,10 @@ export default {
   createUser,
   getUser,
   generatePasswordHash,
+  generateVerificationToken,
+  generateVerificationTokenExpire,
+  signVerificationToken,
+  verifySignedVerificationToken,
   signUserToken,
+  adminRole
 }

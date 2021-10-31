@@ -2,7 +2,7 @@
   <v-container class="text-center">
     <v-row :align="'center'" :justify="'center'" class="mt-12">
       <v-col cols="12" md="6" lg="3">
-        <authentication-form btn-text="Log in" @submit="login" />
+        <auth-form btn-text="Log in" @submit="login" />
       </v-col>
     </v-row>
   </v-container>

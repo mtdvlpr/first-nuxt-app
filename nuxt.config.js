@@ -121,5 +121,15 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     watch: ['api']
+  },
+
+  env: {
+    MONGODB_USER: process.env.MONGODB_USER,
+    MONGODB_PASS: process.env.MONGODB_PASS,
+    MONGODB_DB: process.env.MONGODB_DB,
+    AUTH_USER_SECRET: process.env.AUTH_USER_SECRET,
+    AUTH_EMAIL_VERIFICATION_SECRET: process.env.AUTH_EMAIL_VERIFICATION_SECRET,
+    SENDGRID_SENDER: process.env.SENDGRID_SENDER,
+    SENDGRID_API_KEY: process.env.SENDGRID_API_KEY
   }
 }
