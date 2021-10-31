@@ -24,6 +24,7 @@ export default {
   plugins: [
     '~plugins/axios',
     '~plugins/common',
+    '~plugins/console',
     '~plugins/constants',
     '~plugins/flash',
   ],
@@ -54,7 +55,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    debug: process.env.NODE_ENV !== 'production'
+    debug: process.env.NODE_ENV === 'development'
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

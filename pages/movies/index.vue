@@ -56,7 +56,6 @@ export default {
             .map((g) => g.name)
         })
         this.movies = movies
-        console.log(result.data.results)
       } catch (e) {
         console.error(e)
         this.$error("Movies couldn't be fetched")

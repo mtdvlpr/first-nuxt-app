@@ -23,7 +23,6 @@ export default {
             password: form.password,
           },
         })
-        console.log(response)
         this.$flash(response.data.message)
       } catch (e) {
         console.error(e.response)
