@@ -25,7 +25,7 @@ export default {
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  components: [{ path: '~/components', pathPrefix: false }],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -48,7 +48,9 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    debug: process.env.NODE_ENV !== 'production'
+  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
@@ -66,6 +68,15 @@ export default {
     theme: {
       dark: true,
       themes: {
+        light: {
+          primary: colors.blue.darken2,
+          accent: colors.blue.accent1,
+          secondary: colors.grey.darken3,
+          info: colors.blue,
+          warning: colors.amber,
+          error: colors.red.accent2,
+          success: colors.green,
+        },
         dark: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
