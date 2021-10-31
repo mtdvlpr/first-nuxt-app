@@ -48,6 +48,7 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
+    '@nuxtjs/auth-next'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -64,6 +65,26 @@ export default {
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {},
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/auth/login',
+            method: 'post',
+            propertyName: 'token'
+          },
+          logout: false,
+          user: {
+            url: '/auth/user',
+            method: 'get',
+            propertyName: false
+          },
+        },
+      }
+    },
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -93,7 +114,12 @@ export default {
     }
   },
 
+  serverMiddleware: {
+    '/api': '~/api'
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    watch: ['api']
   }
 }
