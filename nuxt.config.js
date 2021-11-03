@@ -6,14 +6,8 @@ export default {
     titleTemplate: '%s - Movies For You',
     title: 'first-nuxt-app',
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -46,23 +40,44 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/proxy',
     // https://go.nuxtjs.dev/pwa
+    '@nuxtjs/onesignal',
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
+    proxy: true,
     debug: process.env.NODE_ENV === 'development'
+  },
+
+  proxy: {
+    '/onesignal': { target: 'https://onesignal.com/api/v1/notifications', pathRewrite: { '^/onesignal': '' } }
+  },
+
+  oneSignal: {
+    init: {
+      appId: process.env.ONESIGNAL_APP_ID,
+      allowLocalhostAsSecureOrigin: true,
+    }
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
+    meta: {
+      name: 'Movies For You',
+      description: 'A simple movie collection application.',
+      theme_color: colors.blue.darken2,
+      ogHost: process.env.NODE_ENV === 'production' ? 'http://643622.infhaarlem.nl/' : 'http://localhost:3000/'
+    },
     manifest: {
-      lang: 'en'
-    }
+      name: 'Movies For You',
+      short_name: 'M4Y'
+    },
   },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
@@ -98,7 +113,6 @@ export default {
           primary: colors.blue.darken2,
           accent: colors.blue.accent1,
           secondary: colors.grey.darken3,
-          card: colors.white,
           info: colors.blue,
           warning: colors.amber,
           error: colors.red.accent2,
@@ -108,7 +122,6 @@ export default {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
-          card: '#272727',
           info: colors.blue,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
@@ -124,17 +137,18 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    watch: ['api']
+    watch: ['api', 'static'],
+    /* extend(config, { isClient }) {
+      // Extend only webpack config for client-bundle
+      if (isClient) {
+        config.devtool = 'source-map'
+      }
+    } */
   },
 
-  env: {
-    MONGODB_USER: process.env.MONGODB_USER,
-    MONGODB_PASS: process.env.MONGODB_PASS,
-    MONGODB_DB: process.env.MONGODB_DB,
-    AUTH_USER_SECRET: process.env.AUTH_USER_SECRET,
-    AUTH_EMAIL_VERIFICATION_SECRET: process.env.AUTH_EMAIL_VERIFICATION_SECRET,
-    MOVIE_API_KEY: process.env.MOVIE_API_KEY,
-    SENDGRID_SENDER: process.env.SENDGRID_SENDER,
-    SENDGRID_API_KEY: process.env.SENDGRID_API_KEY
-  }
+  publicRuntimeConfig: {
+    movieApiKey: process.env.MOVIE_API_KEY,
+    oneSignalAppId: process.env.ONESIGNAL_APP_ID,
+    oneSignalApiKey: process.env.ONESIGNAL_API_KEY,
+  },
 }

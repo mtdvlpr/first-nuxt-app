@@ -5,4 +5,4 @@ export function disableLogs() {
 }
 
 // eslint-disable-next-line no-unused-expressions
-if (process.env.NODE_ENV === "production") disableLogs()
+// if (process.env.NODE_ENV === "production") disableLogs()

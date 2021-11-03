@@ -10,7 +10,7 @@
           </v-col>
         </template>
         <template v-else>
-          <v-col v-for="movie in movies" :key="movie.id" cols="6">
+          <v-col v-for="movie in movies" :key="movie.id" cols="12" sm="6">
             <movie-card :movie="movie" />
           </v-col>
         </template>

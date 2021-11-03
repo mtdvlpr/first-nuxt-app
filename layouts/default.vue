@@ -31,13 +31,14 @@
         class="hidden-md-and-up"
         @click.stop="drawer = !drawer"
       />
-      <nuxt-link exact to="/">
+      <nuxt-link exact aria-label="Go to home" to="/">
         <v-img
           class="mx-2"
-          src="/v.png"
+          :src="$icon(64)"
           max-height="40"
           max-width="40"
           contain
+          alt="Website Logo"
         />
       </nuxt-link>
       <v-toolbar-title>Movies For You</v-toolbar-title>
@@ -50,10 +51,17 @@
       </v-toolbar-items>
       <v-spacer />
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn icon @click="toggleDarkMode">
+        <v-btn icon aria-label="Toggle dark mode" @click="toggleDarkMode">
           <v-icon>mdi-brightness-6</v-icon>
         </v-btn>
-        <template v-if="$auth.loggedIn">
+        <v-btn
+          icon
+          aria-label="Enable notifications"
+          @click="enableNotifications"
+        >
+          <v-icon>mdi-bell</v-icon>
+        </v-btn>
+        <template v-if="loggedIn">
           <v-btn to="/profile" nuxt exact>
             <v-icon left>mdi-account</v-icon>
             Your account
@@ -108,6 +116,7 @@ export default {
   data() {
     return {
       drawer: false,
+      notify: false,
       items: [
         {
           icon: 'mdi-information-outline',
@@ -128,9 +137,34 @@ export default {
     }
   },
   computed: {
+    loggedIn() {
+      return this.$auth.loggedIn
+    },
     footerColor() {
       return this.$vuetify.theme.dark ? '' : 'black'
     },
+  },
+  watch: {
+    loggedIn() {
+      window.OneSignal.sendTag('id', this.getIdentifier())
+    },
+  },
+  mounted() {
+    window.OneSignal.push(() => {
+      window.OneSignal.log.setLevel('warn')
+      window.OneSignal.sendTag('id', this.getIdentifier())
+    })
+    console.log(this.$OneSignal)
+    window.OneSignal.push(() => {
+      window.OneSignal.isPushNotificationsEnabled((enabled) => {
+        if (enabled) {
+          console.log('Push notifications are enabled!')
+        } else {
+          console.log('Push notifications are not enabled yet.')
+        }
+        this.notify = enabled
+      })
+    })
   },
   methods: {
     toggleDarkMode() {
@@ -139,6 +173,41 @@ export default {
     logout() {
       this.$auth.logout()
       this.$flash("You're logged out")
+    },
+    enableNotifications() {
+      if (this.notify) {
+        this.sendNotification()
+      } else {
+        window.OneSignal.push(() => {
+          window.OneSignal.showSlidedownPrompt()
+        })
+        window.OneSignal.push(() => {
+          window.OneSignal.isPushNotificationsEnabled((enabled) => {
+            this.notify = enabled
+            if (enabled) {
+              this.sendNotification()
+            } else {
+              console.log('Push notifications are still not enabled yet.')
+            }
+          })
+        })
+      }
+    },
+    sendNotification() {
+      this.$oneSignalApi.post('onesignal', {
+        identifier: this.getIdentifier(),
+        headings: {
+          en: 'Notification test',
+          ja: 'Notify person with id ' + this.getIdentifier(),
+        },
+        contents: {
+          en: 'This is a notifcation test',
+          ja: 'notifying person with id ' + this.getIdentifier(),
+        },
+      })
+    },
+    getIdentifier() {
+      return this.$auth.user ? this.$auth.user.id : 'guest'
     },
   },
 }
