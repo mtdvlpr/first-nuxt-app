@@ -11,7 +11,7 @@
         </template>
         <template v-else>
           <v-col v-for="movie in movies" :key="movie.id" cols="12" sm="6">
-            <movie-card :movie="movie" />
+            <lazy-hydrate ssr-only><movie-card :movie="movie" /></lazy-hydrate>
           </v-col>
         </template>
       </v-row>
@@ -23,7 +23,11 @@
   </page-layout>
 </template>
 <script>
+import LazyHydrate from 'vue-lazy-hydration'
 export default {
+  components: {
+    LazyHydrate
+  },
   props: {},
   data() {
     return {

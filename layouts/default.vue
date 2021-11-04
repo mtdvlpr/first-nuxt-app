@@ -41,7 +41,9 @@
           alt="Website Logo"
         />
       </nuxt-link>
-      <v-toolbar-title>Movies For You</v-toolbar-title>
+      <v-toolbar-title @click="$router.push('/')">
+        Movies For You
+      </v-toolbar-title>
       <v-spacer />
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn v-for="item in items" :key="item.title" :to="item.to" nuxt exact>
@@ -212,3 +214,8 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.v-toolbar__title {
+  cursor: pointer;
+}
+</style>
