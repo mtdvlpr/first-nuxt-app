@@ -26,7 +26,7 @@
     "@nuxtjs/onesignal": "^3.0.0-beta.16",
     "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
-    "@sendgrid/mail": "^7.5.0",
+    "@sendgrid/mail": "^7.6.0",
     "bcrypt": "^5.0.1",
     "core-js": "^3.15.1",
     "cors": "^2.8.5",
