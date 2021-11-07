@@ -137,7 +137,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    analyze: true,
     watch: ['api', 'static'],
     /* extend(config, { isClient }) {
       // Extend only webpack config for client-bundle

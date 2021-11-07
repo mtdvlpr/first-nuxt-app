@@ -2,7 +2,15 @@
   <v-container class="text-center">
     <v-row :align="'center'" :justify="'center'" class="mt-12">
       <v-col cols="12" md="6" lg="3">
-        <auth-form btn-text="Log in" @submit="login" />
+        <auth-form :btn="{ text: 'Log in' }" @submit="login" />
+        <p>
+          Don't have an acocunt yet?
+          <nuxt-link exact to="/register">Register</nuxt-link>
+        </p>
+        <p>
+          Forgot you password?
+          <nuxt-link exact to="/login/reset">Reset password</nuxt-link>
+        </p>
       </v-col>
     </v-row>
   </v-container>

@@ -7,7 +7,7 @@
       <v-row justify="center" class="mt-12">
         <auth-form
           variant="pass-pass"
-          button-title="Change password"
+          :btn="{ text: 'Change password' }"
           @submit="changePassword"
         />
       </v-row>

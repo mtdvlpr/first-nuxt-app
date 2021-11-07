@@ -8,7 +8,7 @@
         <v-col cols="12" md="6" lg="3">
           <auth-form
             variant="email"
-            btn-text="Resend verification token"
+            :btn="{ text: 'Resend verification token' }"
             @submit="resendToken"
           />
         </v-col>

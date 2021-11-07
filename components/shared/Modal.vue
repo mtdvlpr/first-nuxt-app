@@ -9,7 +9,7 @@
   >
     <v-card color="card">
       <template v-if="title">
-        <v-card-title class="text-h6 py-0" v-html="title" />
+        <v-card-title v-html="title" />
         <v-divider />
       </template>
       <loading v-if="pending" :message="message" />

@@ -8,7 +8,7 @@
         <v-col cols="12" md="6" lg="3">
           <auth-form
             variant="email"
-            btn-text="Change/reset password"
+            :btn="{ text: 'Reset password', color: 'error' }"
             @submit="sendPasswordToken"
           />
         </v-col>

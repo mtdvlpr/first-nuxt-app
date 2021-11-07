@@ -4,6 +4,7 @@
       ref="form"
       v-model="form.valid"
       lazy-validation
+      class="mb-4"
       @submit.prevent="validate"
     >
       <v-text-field
@@ -36,10 +37,10 @@
       />
       <v-btn
         :disabled="!form.valid"
-        color="primary"
+        :color="btn.color !== undefined ? btn.color : 'primary'"
         class="mr-4"
         type="submit"
-        v-text="btnText"
+        v-text="btn.text"
       />
     </v-form>
   </client-only>
@@ -53,8 +54,8 @@ export default {
       default: 'email-pass',
       required: false,
     },
-    btnText: {
-      type: String,
+    btn: {
+      type: Object,
       required: true,
     },
   },

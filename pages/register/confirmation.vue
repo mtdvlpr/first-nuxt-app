@@ -3,18 +3,14 @@
     <v-container>
       <v-row justify="center" class="mt-12 text-center">
         <v-col v-if="confirmationStatus === 'verified'" cols="12">
-          <v-btn to="/login" nuxt class="ma-3" color="primary"
-            >Go to login page</v-btn
-          >
+          <v-btn to="/login" nuxt class="ma-3" color="primary">
+            Go to login page
+          </v-btn>
         </v-col>
         <v-col v-else-if="confirmationStatus === 'unverified'" cols="12">
-          <v-btn
-            to="/register/confirmation/resend"
-            nuxt
-            class="ma-3"
-            color="primary"
-            >Resend a verification token</v-btn
-          >
+          <v-btn to="/register/resend" nuxt class="ma-3" color="primary">
+            Resend a verification token
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
