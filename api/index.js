@@ -136,30 +136,38 @@ app.post('/auth/password/reset', async (req, res) => {
   const user = await AuthenticationController.getUser(email)
 
   if (user) {
-    const verificationToken =
-      AuthenticationController.generateVerificationToken()
-    const verificationTokenExpire =
-      AuthenticationController.generateVerificationTokenExpire()
+    try {
+      const verificationToken =
+        AuthenticationController.generateVerificationToken()
+      const verificationTokenExpire =
+        AuthenticationController.generateVerificationTokenExpire()
 
-    user.verificationToken = verificationToken
-    user.verificationTokenExpire = verificationTokenExpire
-    user.passwordReset = true
-    user.save()
+      user.verificationToken = verificationToken
+      user.verificationTokenExpire = verificationTokenExpire
+      user.resetPassword = true
+      user.save()
 
-    const signedVerificationToken =
-      AuthenticationController.signVerificationToken(
+      const signedVerificationToken =
+        AuthenticationController.signVerificationToken(
+          user.email,
+          user.verificationToken
+        )
+
+      await MailerController.sendPasswordChangeToken(
         user.email,
-        user.verificationToken
+        'Password Reset',
+        signedVerificationToken
       )
-
-    await MailerController.sendPasswordChangeToken(
-      user.email,
-      'Password Reset',
-      signedVerificationToken
-    )
-    return res
-      .status(200)
-      .send({ message: 'A link has been sent. Check your email.' })
+      return res
+        .status(200)
+        .send({ message: 'A link has been sent. Check your email.' })
+    } catch (err) {
+      console.error(err)
+      return res.status(500).send({
+        message: 'Something went wrong. Please try again...',
+        error: err,
+      })
+    }
   } else {
     return res.status(404).send({ message: "User can't be found!" })
   }
@@ -172,28 +180,39 @@ app.post('/auth/password/change', async (req, res) => {
   const { email, verificationToken } =
     AuthenticationController.verifySignedVerificationToken(token)
   const user = await AuthenticationController.getUser(email)
-  if (
+  if (user && user.verificationTokenExpire < new Date()) {
+    return res
+      .status(400)
+      .send({ message: 'Token has expired. Request a new reset link.' })
+  } else if (
     user &&
     user.verificationToken === verificationToken &&
     user.verificationTokenExpire >= new Date() &&
-    user.passwordReset === true
+    user.resetPassword === true
   ) {
     try {
       user.password = await AuthenticationController.generatePasswordHash(
         password
       )
-      user.passwordReset = false
+      user.resetPassword = false
       user.save()
       return res.status(200).send({ message: 'Password has been changed.' })
     } catch (err) {
-      return res
-        .status(500)
-        .send({ message: 'An error occurred. Please try again later...' })
+      console.error(err)
+      return res.status(500).send({
+        message: 'An error occurred. Please try again later...',
+        error: err,
+      })
     }
   } else {
-    return res
-      .status(400)
-      .send({ message: 'Token is invalid!. Try resending your request.' })
+    return res.status(400).send({
+      message: 'Token is invalid!. Try resending your request.',
+      payload: {
+        user,
+        verificationToken,
+        date: user.verificationTokenExpire >= new Date(),
+      },
+    })
   }
 })
 

@@ -39,7 +39,9 @@ export default {
           password: form.password,
         })
         this.$flash(verification.data.message)
+        this.$router.push('/login')
       } catch (err) {
+        console.warn(err.response.data.payload)
         this.$error(err.response.data.message)
       }
     },

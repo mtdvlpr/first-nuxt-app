@@ -1,4 +1,11 @@
 export default function ({ $axios, $config }, inject) {
+  $axios.onError((error) => {
+    console.error(error)
+    if (error.response.status === 500) {
+      console.error(error.response.data.error)
+    }
+  })
+
   const movieApi = $axios.create()
   const oneSignalApi = $axios.create()
 
