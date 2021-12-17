@@ -10,7 +10,7 @@
     </template>
   </page-layout>
 </template>
-<script>
+<script lang="ts">
 export default {
   data() {
     return {
@@ -35,7 +35,9 @@ export default {
       try {
         const result = await this.$movieApi.get(`/movie/${this.movieId}`)
         const movie = result.data
-        movie.genres = movie.genres.map((g) => g.name)
+        movie.genres = movie.genres.map(
+          (g: { id: number; name: string }) => g.name
+        )
         this.movie = movie
       } catch (e) {
         console.error(e)

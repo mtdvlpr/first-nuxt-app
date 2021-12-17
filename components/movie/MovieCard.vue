@@ -35,7 +35,7 @@
     </div>
   </v-card>
 </template>
-<script>
+<script lang="ts">
 export default {
   props: {
     movie: {
@@ -49,7 +49,7 @@ export default {
     },
   },
   methods: {
-    getGenres(genres) {
+    getGenres(genres: string[]) {
       let string = ''
       genres.forEach((genre, i) => {
         if (i !== 0) string += ', '

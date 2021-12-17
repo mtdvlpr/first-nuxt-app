@@ -46,7 +46,7 @@
   </client-only>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   props: {
     variant: {
@@ -68,19 +68,20 @@ export default {
         passwordCheck: '',
       },
       emailRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        (v: string) => !!v || 'E-mail is required',
+        (v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
       passwordRules: [
-        (v) => !!v || 'Password is required',
-        (v) =>
+        (v: string) => !!v || 'Password is required',
+        (v: string) =>
           (v && v.length <= 20) || 'Password must be less than 20 characters',
       ],
     }
   },
   methods: {
     validate() {
-      if (this.$refs.form.validate()) {
+      const form: any = this.$refs.form
+      if (form?.validate()) {
         this.$emit('submit', this.form)
       } else {
         this.$error('Form is not valid!')

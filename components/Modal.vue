@@ -17,10 +17,9 @@
     </v-card>
   </v-dialog>
 </template>
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex'
 export default {
-  components: {},
   data() {
     return {
       dialog: false,

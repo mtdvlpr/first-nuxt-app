@@ -23,7 +23,7 @@
     </table>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   middleware: 'auth',
   computed: {

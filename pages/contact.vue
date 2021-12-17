@@ -17,19 +17,23 @@
     </v-col>
   </v-row>
 </template>
-<script>
+<script lang="ts">
 export default {
   head() {
     return { title: 'Contact' }
   },
   methods: {
-    flash(message, color = null, exec = null) {
+    flash(
+      message: string,
+      color: string | null = null,
+      exec: Function | null = null
+    ) {
       this.$flash(message, color, exec)
     },
-    warning(message) {
+    warning(message: string) {
       this.$warn(message)
     },
-    error(message) {
+    error(message: string) {
       this.$error(message)
     },
     confirm() {

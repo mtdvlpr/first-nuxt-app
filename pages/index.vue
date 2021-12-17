@@ -79,7 +79,7 @@
     </v-col>
   </v-row>
 </template>
-<script>
+<script lang="ts">
 export default {
   head() {
     return { title: 'Home' }
