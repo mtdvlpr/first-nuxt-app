@@ -26,7 +26,7 @@
 import LazyHydrate from 'vue-lazy-hydration'
 export default {
   components: {
-    LazyHydrate
+    LazyHydrate,
   },
   props: {},
   data() {

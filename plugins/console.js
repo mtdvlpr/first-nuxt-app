@@ -1,7 +1,7 @@
 export function disableLogs() {
-  console.log = () => { }
-  console.warn = () => { }
-  console.error = () => { }
+  console.log = () => {}
+  console.warn = () => {}
+  console.error = () => {}
 }
 
 // eslint-disable-next-line no-unused-expressions

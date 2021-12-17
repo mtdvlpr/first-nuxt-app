@@ -24,7 +24,7 @@ export const mutations = {
   },
   clear(state) {
     Object.keys(state).forEach((key) => (state[key] = null))
-  }
+  },
 }
 
 export const getters = {
@@ -57,5 +57,5 @@ export const getters = {
   },
   flash(state) {
     return state.flash
-  }
+  },
 }

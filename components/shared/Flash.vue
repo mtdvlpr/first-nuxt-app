@@ -11,7 +11,7 @@
       :color="m.color"
       :min-width="0"
       :min-height="0"
-      content-class="message__content"
+      content-class="message-content"
       :style="`z-index: 999; top: ${60 * key + 8}px`"
       @click="performExec(m.exec)"
     >
@@ -65,7 +65,7 @@ export default {
 }
 </script>
 <style scoped>
-.messages >>> .message__content {
+.messages >>> .message-content {
   text-align: center !important;
   padding: 10px 20px !important;
 }

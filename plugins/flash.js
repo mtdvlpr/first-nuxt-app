@@ -3,28 +3,28 @@ export default function ({ store }, inject) {
     store.dispatch('flash/show', {
       message,
       color,
-      exec
+      exec,
     })
   })
 
   inject('success', (message) => {
     store.dispatch('flash/show', {
       message,
-      color: 'success'
+      color: 'success',
     })
   })
 
   inject('warn', (message) => {
     store.dispatch('flash/show', {
       message,
-      color: 'warning'
+      color: 'warning',
     })
   })
 
   inject('error', (message) => {
     store.dispatch('flash/show', {
       message,
-      color: 'error'
+      color: 'error',
     })
   })
 }

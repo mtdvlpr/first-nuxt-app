@@ -60,5 +60,5 @@ export const getters = {
   },
   execOnClose(state) {
     return state.execOnClose
-  }
+  },
 }

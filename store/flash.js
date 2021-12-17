@@ -15,7 +15,7 @@ export const mutations = {
 
   exec(state, exec) {
     state.exec = exec
-  }
+  },
 }
 
 export const actions = {
@@ -27,7 +27,7 @@ export const actions = {
 
   clear({ commit }) {
     commit('message', '')
-  }
+  },
 }
 
 export const getters = {
@@ -39,5 +39,5 @@ export const getters = {
   },
   exec(state) {
     return state.exec
-  }
+  },
 }

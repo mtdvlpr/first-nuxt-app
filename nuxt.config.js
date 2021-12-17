@@ -5,14 +5,11 @@ export default {
   head: {
     titleTemplate: '%s - Movies For You',
     title: 'first-nuxt-app',
-    meta: [
-      { name: 'format-detection', content: 'telephone=no' }
-    ],
+    meta: [{ name: 'format-detection', content: 'telephone=no' }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -28,8 +25,8 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
+    // https://go.nuxtjs.dev/typescript
+    '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/vuetify
@@ -41,8 +38,8 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
-    // https://go.nuxtjs.dev/pwa
     '@nuxtjs/onesignal',
+    // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
@@ -52,18 +49,21 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     proxy: true,
-    debug: process.env.NODE_ENV === 'development'
+    debug: process.env.NODE_ENV === 'development',
   },
 
   proxy: {
-    '/onesignal': { target: 'https://onesignal.com/api/v1/notifications', pathRewrite: { '^/onesignal': '' } }
+    '/onesignal': {
+      target: 'https://onesignal.com/api/v1/notifications',
+      pathRewrite: { '^/onesignal': '' },
+    },
   },
 
   oneSignal: {
     init: {
       appId: process.env.ONESIGNAL_APP_ID,
       allowLocalhostAsSecureOrigin: true,
-    }
+    },
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -72,11 +72,15 @@ export default {
       name: 'Movies For You',
       description: 'A simple movie collection application.',
       theme_color: colors.blue.darken2,
-      ogHost: process.env.NODE_ENV === 'production' ? 'http://643622.infhaarlem.nl/' : 'http://localhost:3000/'
+      ogHost:
+        process.env.NODE_ENV === 'production'
+          ? 'http://643622.infhaarlem.nl/'
+          : 'http://localhost:3000/',
     },
     manifest: {
+      lang: 'en',
       name: 'Movies For You',
-      short_name: 'M4Y'
+      short_name: 'M4Y',
     },
   },
 
@@ -90,16 +94,16 @@ export default {
           login: {
             url: '/auth/login',
             method: 'post',
-            propertyName: 'token'
+            propertyName: 'token',
           },
           logout: false,
           user: {
             url: '/auth/user',
             method: 'get',
-            propertyName: false
+            propertyName: false,
           },
         },
-      }
+      },
     },
   },
 
@@ -125,14 +129,14 @@ export default {
           info: colors.blue,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    }
+          success: colors.green.accent3,
+        },
+      },
+    },
   },
 
   serverMiddleware: {
-    '/api': '~/api'
+    '/api': '~/api',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

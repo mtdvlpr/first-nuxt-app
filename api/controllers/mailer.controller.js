@@ -12,11 +12,9 @@ async function sendEmail(to, subject, text, html) {
     html,
   }
 
-  await sgMail
-    .send(msg)
-    .catch((error) => {
-      throw error
-    })
+  await sgMail.send(msg).catch((error) => {
+    throw error
+  })
 }
 
 async function sendRegistrationToken(to, subject, verificationToken) {
@@ -32,11 +30,11 @@ async function sendPasswordChangeToken(to, subject, verificationToken) {
 }
 
 function stripHtmlTags(html) {
-  return html.replace(/(<([^>]+)>)/gi, "");
+  return html.replace(/(<([^>]+)>)/gi, '')
 }
 
 export default {
   sendEmail,
   sendRegistrationToken,
-  sendPasswordChangeToken
+  sendPasswordChangeToken,
 }

@@ -1,7 +1,7 @@
 import User from '../models/user'
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
-const jwt = require("jsonwebtoken")
+const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
 const LocalStrategy = require('passport-local').Strategy
@@ -14,10 +14,10 @@ const adminRole = (req, res, next) => {
   if (req.user.role !== 'admin') {
     return res.status(403).send({
       status: 'fail',
-      message: 'Invalid authorization level!'
+      message: 'Invalid authorization level!',
     })
   }
-  next();
+  next()
 }
 
 const tokenExtractor = function (req) {
@@ -35,41 +35,47 @@ const tokenExtractor = function (req) {
   return token
 }
 
-passport.use(new JwtStrategy({
-  jwtFromRequest: tokenExtractor,
-  secretOrKey: authUserSecret
-},
-  async function (jwtPayload, done) {
-    try {
-      const user = await getUser(jwtPayload.email)
-      if (user) {
-        return done(null, {
-          id: user._id,
-          email: user.email,
-          scope: user.scope
-        })
-      } else {
-        return done(null, false, { message: 'The user could not be found!' })
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: tokenExtractor,
+      secretOrKey: authUserSecret,
+    },
+    async function (jwtPayload, done) {
+      try {
+        const user = await getUser(jwtPayload.email)
+        if (user) {
+          return done(null, {
+            id: user._id,
+            email: user.email,
+            scope: user.scope,
+          })
+        } else {
+          return done(null, false, { message: 'The user could not be found!' })
+        }
+      } catch (err) {
+        return done(err)
       }
-    } catch (err) {
-      return done(err)
     }
-  }
-))
+  )
+)
 
 passport.use(
   new LocalStrategy(
     {
       usernameField: 'email',
-      passwordField: 'password'
+      passwordField: 'password',
     },
     async function (email, password, done) {
       await getUser(email)
         .then((user) => {
           return user
-        }).then(async (user) => {
+        })
+        .then(async (user) => {
           if (!user) {
-            return done(null, false, { message: 'Either your email or password was incorrect!' })
+            return done(null, false, {
+              message: 'Either your email or password was incorrect!',
+            })
           }
 
           const validation = await comparePasswords(password, user.password)
@@ -78,12 +84,15 @@ passport.use(
           } else if (validation) {
             return done(null, false, {
               message: 'You have to verify your email address first!',
-              resendToken: true
+              resendToken: true,
             })
           } else {
-            return done(null, false, { message: 'Either your email or password was incorrect!' })
+            return done(null, false, {
+              message: 'Either your email or password was incorrect!',
+            })
           }
-        }).catch((err) => {
+        })
+        .catch((err) => {
           return done(err)
         })
     }
@@ -93,10 +102,16 @@ passport.use(
 async function createUser(email, password) {
   const verificationToken = generateVerificationToken()
   const verificationTokenExpire = generateVerificationTokenExpire()
-  return await User.create({ email, password, verificationToken, verificationTokenExpire })
+  return await User.create({
+    email,
+    password,
+    verificationToken,
+    verificationTokenExpire,
+  })
     .then((data) => {
       return data
-    }).catch((error) => {
+    })
+    .catch((error) => {
       throw error
     })
 }
@@ -105,7 +120,8 @@ async function getUser(email) {
   return await User.findOne({ email })
     .then((data) => {
       return data
-    }).catch((error) => {
+    })
+    .catch((error) => {
       throw error
     })
 }
@@ -127,10 +143,13 @@ function generateVerificationTokenExpire() {
 }
 
 function signVerificationToken(email, verificationToken) {
-  return jwt.sign({
-    email,
-    verificationToken
-  }, authEmailVerificationSecret)
+  return jwt.sign(
+    {
+      email,
+      verificationToken,
+    },
+    authEmailVerificationSecret
+  )
 }
 
 function verifySignedVerificationToken(token) {
@@ -138,10 +157,13 @@ function verifySignedVerificationToken(token) {
 }
 
 function signUserToken(user) {
-  return jwt.sign({
-    id: user.id,
-    email: user.email
-  }, authUserSecret)
+  return jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+    },
+    authUserSecret
+  )
 }
 
 export default {
@@ -153,5 +175,5 @@ export default {
   signVerificationToken,
   verifySignedVerificationToken,
   signUserToken,
-  adminRole
+  adminRole,
 }
