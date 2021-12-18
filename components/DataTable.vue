@@ -29,7 +29,7 @@
     </v-pagination>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   props: {
     headers: {
@@ -76,7 +76,7 @@ export default {
     }
   },
   computed: {
-    numberOfPages() {
+    numberOfPages(): number {
       return Math.ceil(this.itemsTotal / this.pagination.rowsPerPage)
     },
   },
@@ -90,7 +90,7 @@ export default {
     this.setItems()
   },
   methods: {
-    async setItems() {
+    async setItems(): Promise<void> {
       this.loading = true
       const result = await this.getItems(this.pagination)
       if (result) {

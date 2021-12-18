@@ -18,8 +18,8 @@
     "test": "jest"
   },
   "lint-staged": {
-    "*.{js,ts,vue}": "eslint --cache",
-    "*.{css,scss,sass,html,vue}": "stylelint",
+    "*.{js,ts,vue}": "eslint --fix --cache",
+    "*.{css,scss,sass,html,vue}": "stylelint --fix",
     "*.**": "prettier --check --ignore-unknown"
   },
   "dependencies": {

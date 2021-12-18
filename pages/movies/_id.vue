@@ -12,13 +12,13 @@
 </template>
 <script lang="ts">
 export default {
-  data(): Object {
+  data() {
     return {
       loading: true,
       movie: null,
     }
   },
-  head(): Object {
+  head() {
     return { title: 'Movie #' + this.$route.params.id }
   },
   computed: {

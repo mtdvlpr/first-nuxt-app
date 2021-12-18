@@ -9,8 +9,7 @@
     <NuxtLink to="/"> Home page </NuxtLink>
   </v-app>
 </template>
-
-<script>
+<script lang="ts">
 export default {
   layout: 'empty',
   props: {

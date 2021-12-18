@@ -112,8 +112,7 @@
     </v-footer>
   </v-app>
 </template>
-
-<script>
+<script lang="ts">
 export default {
   data() {
     return {
@@ -139,26 +138,25 @@ export default {
     }
   },
   computed: {
-    loggedIn() {
+    loggedIn(): boolean {
       return this.$auth.loggedIn
     },
-    footerColor() {
+    footerColor(): string {
       return this.$vuetify.theme.dark ? '' : 'black'
     },
   },
   watch: {
     loggedIn() {
-      window.OneSignal.sendTag('id', this.getIdentifier())
+      this.$OneSignal.sendTag('id', this.getIdentifier())
     },
   },
   mounted() {
-    window.OneSignal.push(() => {
-      window.OneSignal.log.setLevel('warn')
-      window.OneSignal.sendTag('id', this.getIdentifier())
+    this.$OneSignal.push(() => {
+      this.$OneSignal.log.setLevel('warn')
+      this.$OneSignal.sendTag('id', this.getIdentifier())
     })
-    console.log(this.$OneSignal)
-    window.OneSignal.push(() => {
-      window.OneSignal.isPushNotificationsEnabled((enabled) => {
+    this.$OneSignal.push(() => {
+      this.$OneSignal.isPushNotificationsEnabled((enabled) => {
         if (enabled) {
           console.log('Push notifications are enabled!')
         } else {
@@ -169,22 +167,22 @@ export default {
     })
   },
   methods: {
-    toggleDarkMode() {
+    toggleDarkMode(): void {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
     },
-    logout() {
+    logout(): void {
       this.$auth.logout()
       this.$flash("You're logged out")
     },
-    enableNotifications() {
+    enableNotifications(): void {
       if (this.notify) {
         this.sendNotification()
       } else {
-        window.OneSignal.push(() => {
-          window.OneSignal.showSlidedownPrompt()
+        this.$OneSignal.push(() => {
+          this.$OneSignal.showSlidedownPrompt()
         })
-        window.OneSignal.push(() => {
-          window.OneSignal.isPushNotificationsEnabled((enabled) => {
+        this.$OneSignal.push(() => {
+          this.$OneSignal.isPushNotificationsEnabled((enabled: boolean) => {
             this.notify = enabled
             if (enabled) {
               this.sendNotification()
@@ -195,7 +193,7 @@ export default {
         })
       }
     },
-    sendNotification() {
+    sendNotification(): void {
       this.$oneSignalApi.post('onesignal', {
         identifier: this.getIdentifier(),
         headings: {
@@ -203,12 +201,12 @@ export default {
           ja: 'Notify person with id ' + this.getIdentifier(),
         },
         contents: {
-          en: 'This is a notifcation test',
+          en: 'This is a notification test',
           ja: 'notifying person with id ' + this.getIdentifier(),
         },
       })
     },
-    getIdentifier() {
+    getIdentifier(): string {
       return this.$auth.user ? this.$auth.user.id : 'guest'
     },
   },

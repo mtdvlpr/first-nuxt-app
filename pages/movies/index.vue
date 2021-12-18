@@ -22,13 +22,12 @@
     </template>
   </page-layout>
 </template>
-<script>
+<script lang="ts">
 import LazyHydrate from 'vue-lazy-hydration'
 export default {
   components: {
     LazyHydrate,
   },
-  props: {},
   data() {
     return {
       movies: [],
@@ -39,12 +38,11 @@ export default {
   head() {
     return { title: 'Our collection' }
   },
-  computed: {},
   mounted() {
     this.getMovies()
   },
   methods: {
-    async getMovies() {
+    async getMovies(): Promise<void> {
       this.loading = true
       try {
         const result = await this.$movieApi.get('/movie/top_rated', {

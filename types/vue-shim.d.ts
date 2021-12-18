@@ -4,6 +4,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     $constants: Object
     $auth: {
+      loggedIn: boolean
       user: { id: string; email: string; scope: string[] }
       loginWith(strategy: string, payload: Object): any
       logout(): void

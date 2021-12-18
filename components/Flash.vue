@@ -19,7 +19,7 @@
     </v-snackbar>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -31,7 +31,7 @@ export default {
     ...mapGetters('flash', ['message', 'color', 'exec']),
   },
   watch: {
-    message(val) {
+    message(val: string) {
       if (val) {
         this.messages.push({
           message: val,
@@ -49,16 +49,26 @@ export default {
     }, 1000)
   },
   methods: {
-    checkMessages() {
-      this.messages.forEach((message, key) => {
-        if (message.showTime < 1) {
-          this.messages.shift()
-        } else {
-          this.messages[key].showTime--
+    checkMessages(): void {
+      this.messages.forEach(
+        (
+          message: {
+            message: string
+            color: string
+            exec: Function
+            showTime: number
+          },
+          key: number
+        ) => {
+          if (message.showTime < 1) {
+            this.messages.shift()
+          } else {
+            this.messages[key].showTime--
+          }
         }
-      })
+      )
     },
-    performExec(exec) {
+    performExec(exec: Function | null): void {
       if (exec) exec()
     },
   },
