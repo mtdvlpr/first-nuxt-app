@@ -1,5 +1,11 @@
 <template>
-  <v-dialog v-model="dialog" scrollable width="100%" :max-width="maxWidth">
+  <v-dialog
+    v-model="dialog"
+    scrollable
+    persistent
+    width="100%"
+    :max-width="maxWidth"
+  >
     <v-card color="card">
       <v-card-title v-if="title" v-text="title" />
       <v-card-text v-if="message" style="max-width: 600px" v-html="message" />

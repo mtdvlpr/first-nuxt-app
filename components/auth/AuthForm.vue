@@ -12,7 +12,6 @@
         v-model="form.email"
         label="E-mail"
         :rules="emailRules"
-        required
       />
       <v-text-field
         v-if="variant == 'email-pass' || variant == 'pass-pass'"
@@ -21,7 +20,6 @@
         label="Password"
         :counter="20"
         :rules="passwordRules"
-        required
       />
       <v-text-field
         v-if="variant == 'pass-pass'"
@@ -33,7 +31,6 @@
           form.password === form.passwordCheck || 'Passwords must match',
           ...passwordRules,
         ]"
-        required
       />
       <v-btn
         :disabled="!form.valid"
