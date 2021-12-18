@@ -23,7 +23,7 @@
   </page-layout>
 </template>
 <script lang="ts">
-import LazyHydrate from 'vue-lazy-hydration'
+import LazyHydrate from '@nujek/vue-lazy-hydration'
 export default {
   components: {
     LazyHydrate,

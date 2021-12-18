@@ -24,10 +24,11 @@
   </div>
 </template>
 <script lang="ts">
+import { User } from '~/types'
 export default {
   middleware: 'auth',
   computed: {
-    getUserInfo() {
+    getUserInfo(): User {
       return this.$auth.user
     },
   },
