@@ -1,3 +1,1 @@
-import pi from './pi'
-
-export default pi
+export * from './pi'

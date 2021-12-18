@@ -12,17 +12,17 @@
 </template>
 <script lang="ts">
 export default {
-  data() {
+  data(): Object {
     return {
       loading: true,
       movie: null,
     }
   },
-  head() {
+  head(): Object {
     return { title: 'Movie #' + this.$route.params.id }
   },
   computed: {
-    movieId() {
+    movieId(): number | undefined {
       return this.$route.params.id
     },
   },
@@ -30,7 +30,7 @@ export default {
     this.getMovie()
   },
   methods: {
-    async getMovie() {
+    async getMovie(): Promise<void> {
       this.loading = true
       try {
         const result = await this.$movieApi.get(`/movie/${this.movieId}`)
