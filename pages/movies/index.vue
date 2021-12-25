@@ -4,14 +4,22 @@
       <card> .col-12 .col-sm-6 .col-md-8 </card>
       <card> .col-12 .col-sm-6 .col-md-8 </card>
       <v-row dense>
-        <template v-if="loading">
-          <v-col v-for="i in 20" :key="i" cols="6">
+        <template v-if="!movies">
+          <v-col v-for="i in pagination.perPage" :key="i" cols="6">
             <v-skeleton-loader type="card" class="pa-2 mb-4" />
           </v-col>
         </template>
         <template v-else>
           <v-col v-for="movie in movies" :key="movie.id" cols="12" sm="6">
-            <lazy-hydrate ssr-only><movie-card :movie="movie" /></lazy-hydrate>
+            <movie-card :movie="movie" />
+          </v-col>
+          <v-col>
+            <v-pagination
+              v-if="pagination.total > pagination.perPage"
+              v-model="pagination.page"
+              :length="pagination.total"
+              :total-visible="10"
+            />
           </v-col>
         </template>
       </v-row>
@@ -23,27 +31,15 @@
   </page-layout>
 </template>
 <script lang="ts">
-import LazyHydrate from '@nujek/vue-lazy-hydration'
 export default {
-  components: {
-    LazyHydrate,
-  },
   data() {
     return {
-      movies: [],
-      loading: false,
+      movies: null,
       pagination: { page: 1, perPage: 20, total: 0 },
     }
   },
-  head() {
-    return { title: 'Our collection' }
-  },
-  mounted() {
-    this.getMovies()
-  },
-  methods: {
-    async getMovies(): Promise<void> {
-      this.loading = true
+  async fetch() {
+    if (process.server) {
       try {
         const result = await this.$movieApi.get('/movie/top_rated', {
           params: { page: this.pagination.page, region: 'NL' },
@@ -61,10 +57,16 @@ export default {
       } catch (e) {
         console.error(e)
         this.$error("Movies couldn't be fetched")
-      } finally {
-        this.loading = false
       }
-    },
+    }
+  },
+  head() {
+    return { title: 'Our collection' }
+  },
+  mounted() {
+    if (!this.movies) {
+      window.location.reload()
+    }
   },
 }
 </script>

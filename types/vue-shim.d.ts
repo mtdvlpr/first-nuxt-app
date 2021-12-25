@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/named
+import { AxiosOptions, NuxtAxiosInstance } from '@nuxtjs/axios'
 import Vue from 'vue'
 
 declare module 'vue/types/vue' {
@@ -9,12 +11,7 @@ declare module 'vue/types/vue' {
       loginWith(strategy: string, payload: Object): any
       logout(): void
     }
-    $movieApi: {
-      get(url: string): Object
-      post(url: string, payload: Object): Object
-      put(url: string, payload: Object): Object
-      delete(url: string): Object
-    }
+    $movieApi: NuxtAxiosInstance
     $flash(message: string, color?: string | null, exec?: Function | null): void
     $warn(message: string): void
     $error(message: string): void
@@ -26,22 +23,16 @@ declare module '*.vue' {
   export default Vue
 }
 
-/* declare module '@nuxt/types' {
+declare module '@nuxt/types' {
   interface Context {
-    $axios: NuxtAxiosInstance
+    $movieApi: NuxtAxiosInstance
   }
 
   interface NuxtAppOptions {
-    $axios: NuxtAxiosInstance
+    $movieApi: NuxtAxiosInstance
   }
 
   interface Configuration {
-    axios?: AxiosOptions
+    movieApi?: AxiosOptions
   }
 }
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    $axios: NuxtAxiosInstance
-  }
-} */

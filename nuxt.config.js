@@ -8,6 +8,8 @@ export default {
     meta: [{ name: 'format-detection', content: 'telephone=no' }],
   },
 
+  modern: process.env.NODE_ENV === 'production' ? 'client' : false,
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
@@ -142,17 +144,19 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     watch: ['api', 'static'],
-    /* extend(config, { isClient }) {
-      // Extend only webpack config for client-bundle
+    extend(config, { isClient }) {
       if (isClient) {
         config.devtool = 'source-map'
       }
-    } */
+    },
   },
 
   publicRuntimeConfig: {
-    movieApiKey: process.env.MOVIE_API_KEY,
     oneSignalAppId: process.env.ONESIGNAL_APP_ID,
     oneSignalApiKey: process.env.ONESIGNAL_API_KEY,
+  },
+
+  privateRuntimeConfig: {
+    movieApiKey: process.env.MOVIE_API_KEY,
   },
 }

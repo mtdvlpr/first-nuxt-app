@@ -9,7 +9,7 @@ export default function ({ $axios, $config }, inject) {
   const movieApi = $axios.create()
   const oneSignalApi = $axios.create()
 
-  movieApi.setBaseURL('https://api.themoviedb.org/3')
+  movieApi.setBaseURL('https://api.themoviedb.org/3/')
   oneSignalApi.setBaseURL('/')
 
   movieApi.onRequest((config) => {
