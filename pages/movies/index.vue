@@ -15,10 +15,11 @@
           </v-col>
           <v-col>
             <v-pagination
-              v-if="pagination.total > pagination.perPage"
+              v-if="pagination.totalResults > pagination.perPage"
               v-model="pagination.page"
-              :length="pagination.total"
-              :total-visible="10"
+              :length="pagination.totalPages"
+              :total-visible="11"
+              @input="changePage"
             />
           </v-col>
         </template>
@@ -35,21 +36,30 @@ export default {
   data() {
     return {
       movies: null,
-      pagination: { page: 1, perPage: 20, total: 0 },
+      pagination: {
+        page: parseInt(this.$route.query.page as string) ?? 1,
+        perPage: 20,
+        totalPages: 1,
+        totalResults: 0,
+      },
     }
   },
   async fetch() {
     if (process.server) {
+      if (!this.pagination.page || this.pagination.page < 1) {
+        this.pagination.page = 1
+      }
       try {
-        const result = await this.$movieApi.get('/movie/top_rated', {
+        const result = await this.$movieApi.$get('/movie/top_rated', {
           params: { page: this.pagination.page, region: 'NL' },
         })
-        this.pagination.total = result.data.total_results
+        this.pagination.totalPages = result.total_pages
+        this.pagination.totalResults = result.total_results
 
-        const movies = result.data.results
-        const genres = await this.$movieApi.get('/genre/movie/list')
+        const movies = result.results
+        const data = await this.$movieApi.$get('/genre/movie/list')
         movies.forEach((movie) => {
-          movie.genres = genres.data.genres
+          movie.genres = data.genres
             .filter((g) => movie.genre_ids.includes(g.id))
             .map((g) => g.name)
         })
@@ -63,10 +73,32 @@ export default {
   head() {
     return { title: 'Our collection' }
   },
+  computed: {
+    page() {
+      if (this.$route.query.page) {
+        return parseInt(this.$route.query.page as string)
+      }
+      return null
+    },
+  },
+  watch: {
+    page(val) {
+      if (!val) {
+        this.movies = null
+        window.location.href = '/movies?page=1'
+      }
+    },
+  },
   mounted() {
     if (!this.movies) {
       window.location.reload()
     }
+  },
+  methods: {
+    changePage(page) {
+      this.movies = null
+      window.location.href = `/movies?page=${page}`
+    },
   },
 }
 </script>
