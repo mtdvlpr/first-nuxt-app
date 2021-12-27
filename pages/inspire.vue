@@ -14,6 +14,7 @@
       <v-btn @click="warning('This is a warning.')">Show warning</v-btn>
       <v-btn @click="error('This is an error!')">Show Error</v-btn>
       <v-btn @click="confirm()">Show modal with confirmation</v-btn>
+      <v-btn @click="fetch()">Fetch</v-btn>
     </v-col>
   </v-row>
 </template>
@@ -52,6 +53,13 @@ export default {
           }, 5000)
         },
       })
+    },
+    async fetch() {
+      const result = await this.$axios.$get(
+        'https://archive.org/metadata/TheAdventuresOfTomSawyer_201303'
+      )
+      this.$axios.$get('https://api.openbrewerydb.org/breweries')
+      console.log(result)
     },
   },
 }

@@ -1,3 +1,15 @@
+interface State {
+  title: string | null
+  message: string | null
+  component: string | null
+  componentProps: string | null
+  maxWidth: string | null
+  exec: Function | null
+  cancel: Function | null
+  to: string | null
+  flash: string | null
+}
+
 export const state = () => ({
   title: null,
   message: null,
@@ -11,7 +23,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  set(state, payload) {
+  set(state: State, payload: State) {
     state.exec = payload.exec
     state.message = payload.message
     state.title = payload.title ?? null
@@ -22,40 +34,40 @@ export const mutations = {
     state.to = payload.to ?? null
     state.flash = payload.flash ?? null
   },
-  clear(state) {
+  clear(state: State) {
     Object.keys(state).forEach((key) => (state[key] = null))
   },
 }
 
 export const getters = {
-  confirm(state) {
+  confirm(state: State) {
     return state
   },
-  exec(state) {
+  exec(state: State) {
     return state.exec
   },
-  title(state) {
+  title(state: State) {
     return state.title
   },
-  message(state) {
+  message(state: State) {
     return state.message
   },
-  component(state) {
+  component(state: State) {
     return state.component
   },
-  componentProps(state) {
+  componentProps(state: State) {
     return state.componentProps
   },
-  maxWidth(state) {
+  maxWidth(state: State) {
     return state.maxWidth
   },
-  cancel(state) {
+  cancel(state: State) {
     return state.cancel
   },
-  to(state) {
+  to(state: State) {
     return state.to
   },
-  flash(state) {
+  flash(state: State) {
     return state.flash
   },
 }

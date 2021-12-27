@@ -1,3 +1,9 @@
+interface State {
+  message: string
+  color: string
+  exec: Function | null
+}
+
 export const state = () => ({
   message: '',
   color: '',
@@ -5,21 +11,21 @@ export const state = () => ({
 })
 
 export const mutations = {
-  message(state, message) {
+  message(state: State, message: string) {
     state.message = message
   },
 
-  color(state, color) {
+  color(state: State, color: string) {
     state.color = color
   },
 
-  exec(state, exec) {
+  exec(state: State, exec: Function | null) {
     state.exec = exec
   },
 }
 
 export const actions = {
-  show({ commit }, payload) {
+  show({ commit }, payload: State) {
     commit('message', payload.message)
     commit('color', payload.color ?? 'info')
     commit('exec', payload.exec ?? null)
@@ -31,13 +37,13 @@ export const actions = {
 }
 
 export const getters = {
-  message(state) {
+  message(state: State) {
     return state.message
   },
-  color(state) {
+  color(state: State) {
     return state.color
   },
-  exec(state) {
+  exec(state: State) {
     return state.exec
   },
 }

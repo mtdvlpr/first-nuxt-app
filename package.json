@@ -9,18 +9,17 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
-    "lint:style": "stylelint \"**/*.{css,scss,sass,html,vue}\" --ignore-path .gitignore",
-    "lint:prettier": "prettier --check .",
+    "lint:js": "eslint --fix --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
+    "lint:style": "stylelint \"**/*.{css,scss,sass,html,vue}\" --fix --ignore-path .gitignore",
+    "lint:prettier": "prettier --write --list-different --ignore-path .gitignore .",
     "lint": "npm run lint:js && npm run lint:style && npm run lint:prettier",
-    "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix && npm run lint:style -- --fix",
     "prepare": "husky install",
     "test": "jest"
   },
   "lint-staged": {
     "*.{js,ts,vue}": "eslint --fix --cache",
     "*.{css,scss,sass,html,vue}": "stylelint --fix",
-    "*.**": "prettier --check --ignore-unknown"
+    "*.**": "prettier --check --ignore-path .gitignore --ignore-unknown"
   },
   "dependencies": {
     "@nujek/vue-lazy-hydration": "^2.0.7",
@@ -31,6 +30,7 @@
     "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
     "@sendgrid/mail": "^7.6.0",
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "core-js": "^3.20.1",
     "cors": "^2.8.5",
