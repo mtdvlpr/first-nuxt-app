@@ -19,7 +19,7 @@
   "lint-staged": {
     "*.{js,ts,vue}": "eslint --fix --cache",
     "*.{css,scss,sass,html,vue}": "stylelint --fix",
-    "*.**": "prettier --check --ignore-path .gitignore --ignore-unknown"
+    "*.**": "prettier --write --list-different --ignore-path .gitignore --ignore-unknown"
   },
   "dependencies": {
     "@nujek/vue-lazy-hydration": "^2.0.7",
