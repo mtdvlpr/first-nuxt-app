@@ -35,6 +35,8 @@ dist
 
 # Service worker
 sw.*
+static/OneSignalSDKWorker.js
+static/OneSignalSDKUpdaterWorker.js
 
 # macOS
 .DS_Store
