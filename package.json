@@ -30,7 +30,7 @@
     "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
     "@sendgrid/mail": "^7.6.0",
-    "axios": "^0.24.0",
+    "axios": "^0.25.0",
     "bcrypt": "^5.0.1",
     "core-js": "^3.20.3",
     "cors": "^2.8.5",
