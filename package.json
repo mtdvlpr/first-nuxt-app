@@ -32,7 +32,7 @@
     "@sendgrid/mail": "^7.6.2",
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
-    "core-js": "^3.22.1",
+    "core-js": "^3.22.2",
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
