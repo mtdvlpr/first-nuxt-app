@@ -42,7 +42,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "vue": "^2.7.5",
-    "vue-server-renderer": "^2.7.4",
+    "vue-server-renderer": "^2.7.5",
     "vue-template-compiler": "^2.7.5",
     "vuetify": "^2.6.7",
     "webpack": "^4.46.0"
