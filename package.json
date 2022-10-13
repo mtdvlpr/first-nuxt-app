@@ -41,9 +41,9 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "vue": "^2.7.11",
+    "vue": "^2.7.12",
     "vue-server-renderer": "^2.7.10",
-    "vue-template-compiler": "^2.7.11",
+    "vue-template-compiler": "^2.7.12",
     "vuetify": "^2.6.11",
     "webpack": "^4.46.0"
   },
